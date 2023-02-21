@@ -5,11 +5,11 @@ import styled from "styled-components";
 import useSWR from 'swr'
 
 export default function Home() {
-  const { data, error } = useSWR("", fetcher)
+  const { data, error } = useSWR("http://127.0.0.1:5000/api/today", fetcher)
 
   if (error) {
     return (
-      <ErrorComponent desc="백앤드 서버에 오류가 발생했습니다." />
+      <ErrorComponent desc={"백앤드 서버에 오류가 발생했습니다." + error} />
     )
   }
 
@@ -21,13 +21,13 @@ export default function Home() {
     return (
       <>
         <Header />
-        {Object.values(data.return).map((value: any, index) => {
-          <Box key={index}>
+        {Object.values(data.backend).map((value: any) => (
+          <Box key={value.title}>
             <h1>{value.title}</h1>
             <div dangerouslySetInnerHTML={{ __html: value.desc }}>
             </div>
           </Box> 
-        })}
+        ))}
       </>
     )
   }
